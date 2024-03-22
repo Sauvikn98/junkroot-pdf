@@ -1,0 +1,16 @@
+{
+    "name": "junk-root/pdf",
+    "description": "Generate/Render PDF with any CSS (including CSS frameworks) using core php",
+    "autoload": {
+        "psr-4": {
+            "JunkRoot\\Pdf\\": "src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sauvik Nath",
+            "email": "sauviknath2023@gmail.com"
+        }
+    ],
+    "require": {}
+}
