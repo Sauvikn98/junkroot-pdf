@@ -1,0 +1,5 @@
+- [ ] An Interface Class that takes in html content to parse HTML characters 
+- [ ] Implement All HTML tags with all of their attributes
+- [ ] Improve styling and character positioning
+- [ ] Introduce Colors
+- More will be updated in this TODO
