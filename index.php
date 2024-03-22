@@ -2,29 +2,17 @@
 
 require_once 'vendor/autoload.php';
 
-$pdf = new JunkRoot\Pdf\PDFGenerator('example.pdf');
+$generator = new JunkRoot\Pdf\PDFGenerator('example.pdf');
+$generator->addContent(
+'<h1>Hello, World!</h1>
+ <p>Hello, World</p>
+<ul>
+ <li> Item1 </li>
+ <li> Item2 </li>
+ <li> Item3 </li>
+ <li> Item4 </li>
+ <li> Item5 </li>
+</ul>
 
-
-$html = '
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sample PDF</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: blue;
-        }
-    </style>
-</head>
-<body>
-    <h1>Sample PDF Document</h1>
-    <p>This is a sample PDF generated using PHP without any external libraries.</p>
-</body>
-</html>
-';
-
-$pdf->addContent($html);
-$pdf->generatePDF();
+');
+$generator->generatePDF();
