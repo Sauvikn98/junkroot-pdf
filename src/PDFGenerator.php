@@ -1,9 +1,6 @@
 <?php
 
 namespace JunkRoot\Pdf;
-use JunkRoot\Pdf\renderer\HeaderRenderer;
-use JunkRoot\Pdf\renderer\ParagraphRenderer;
-use JunkRoot\Pdf\renderer\ListRenderer;
 
 class PDFGenerator {
     protected $content;
@@ -55,15 +52,45 @@ class PDFGenerator {
     private function generatePageContentObject() {
         $html_content = $this->content;
         $pdf_content = '';
-    
-        $header_renderer = new HeaderRenderer();
-        $paragraph_renderer = new ParagraphRenderer();
-        $list_renderer = new ListRenderer();
-        $pdf_content .= $header_renderer->render($html_content);
-        $pdf_content .= $paragraph_renderer->render($html_content);
-        $pdf_content .= $list_renderer->render($html_content);
-    
+
+        $dom = new \DOMDocument();
+        $dom->loadHTML($html_content);
+
+        $pdf_content .= $this->renderDom($dom);
+
         return "5 0 obj\n<< /Length " . strlen($pdf_content) . " >>\nstream\n$pdf_content\nendstream\nendobj\n";
+    }
+
+    private function renderDom(\DOMDocument $dom, $x = 50, $y = 750) {
+        $pdf_content = '';
+
+        $xpath = new \DOMXPath($dom);
+
+        // Render headers
+        for ($i = 1; $i <= 6; $i++) {
+            $headers = $xpath->query("//h$i");
+            foreach ($headers as $header) {
+                $font_size = 24 - ($i - 1) * 2;
+                $pdf_content .= "BT\n/F1 $font_size Tf\n{$x} {$y} Td\n(" . htmlspecialchars($header->nodeValue) . ") Tj\nET\n";
+                $y -= $font_size * 1.2;
+            }
+        }
+
+        // Render paragraphs
+        $paragraphs = $xpath->query("//p");
+        foreach ($paragraphs as $paragraph) {
+            $pdf_content .= "BT\n/F1 12 Tf\n{$x} {$y} Td\n(" . htmlspecialchars($paragraph->nodeValue) . ") Tj\nET\n";
+            $y -= 15;
+        }
+
+        // Render lists
+        $lists = $xpath->query("//ul/li");
+        foreach ($lists as $list) {
+            $pdf_content .= "BT\n/F1 12 Tf\n{$x} {$y} Td\n• " . htmlspecialchars($list->nodeValue) . "\nET\n";
+            $y -= 15;
+        }
+
+        return $pdf_content;
     }
 
     private function generateCrossReferenceTable() {
