@@ -4,7 +4,7 @@ require_once 'vendor/autoload.php';
 
 $generator = new JunkRoot\Pdf\PDFGenerator('example.pdf');
 $generator->addContent(
-    '<h1>Hello, World!</h1>
+    '<h1>Hello, World! </h1>
     <h2>Hello, World!</h2>
     <h3>Hello, World!</h3>
     <h4>Hello, World!</h4>

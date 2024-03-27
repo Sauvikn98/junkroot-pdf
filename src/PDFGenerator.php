@@ -104,4 +104,11 @@ class PDFGenerator {
     private function writeToFile($pdf_content) {
         file_put_contents($this->filename, $pdf_content);
     }
+
+    public function renderPDF() {
+        header('Content-Type: application/pdf; charset=utf-8');
+        echo mb_convert_encoding($this->generatePdfContent(), 'UTF-8', 'UTF-8');
+    }
+
+
 }
